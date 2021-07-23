@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "restapi-echo-server"
-version = "0.2.0"
+version = "0.3.0"
 description = "Simple REST-API echo server"
 authors = ["kthrdei <kthrd.tech@gmail.com>"]
 readme = "README.md"
