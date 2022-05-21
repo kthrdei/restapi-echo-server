@@ -28,4 +28,3 @@ if __name__ == '__main__':
 
     args = arg_parser.parse_args()
     server.start(host=args.host, port=args.port)
-
