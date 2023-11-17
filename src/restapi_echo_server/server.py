@@ -62,8 +62,25 @@ class Handler(http_server.BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+class BodyOnlyHandler(Handler):
+    def _handle(self):
+        content_length = int(self.headers.get('content-length', 0))
+        body = self.rfile.read(content_length).decode('utf-8')
 
-def start(host: str, port: int):
-    with http_server.HTTPServer((host, port), Handler) as server:
+        try:
+            response = json.loads(body)
+            logger.info(f"{json.dumps(response)}")
+        except json.JSONDecodeError as e:
+            logger.warn(f"no json body: {e}")
+            response = None
+
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        self.wfile.write(json.dumps(response).encode('utf-8'))
+
+
+def start(host: str, port: int, only_body: bool):
+    with http_server.HTTPServer((host, port), BodyOnlyHandler if only_body else Handler) as server:
         logger.info(f"Running on {host}:{port}")
         server.serve_forever()

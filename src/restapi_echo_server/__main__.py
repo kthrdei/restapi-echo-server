@@ -25,6 +25,12 @@ if __name__ == '__main__':
         default=8080,
         help='port to listen on',
     )
+    arg_parser.add_argument(
+        '-b', 
+        '--bodyonly',
+        action='store_true',
+        help="only return the plain request body"
+    )
 
     args = arg_parser.parse_args()
-    server.start(host=args.host, port=args.port)
+    server.start(host=args.host, port=args.port, only_body=args.bodyonly)
